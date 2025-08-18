@@ -6,7 +6,7 @@ from src.config import db
 uri = db
 
 
-def get_client():
+async def get_client():
     client = MongoClient(
         uri,
         server_api=ServerApi(

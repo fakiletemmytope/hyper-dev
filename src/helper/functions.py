@@ -31,8 +31,8 @@ async def save_or_update_defi_to_db(updated_data: Protocol):
         "name": "Hyperliquid",
     }
     data = collection.find_one(query_filter)
+    replace_doc = updated_data.model_dump()
     if data:
-        replace_doc = updated_data.model_dump()
         collection.replace_one(query_filter, replace_doc)
     else:
         collection.insert_one(replace_doc)
