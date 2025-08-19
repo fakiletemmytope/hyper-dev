@@ -7,7 +7,7 @@ async def get_token_holders(token: str):
     r = requests.get(f"{hypurrsca_url}/holders/{token}")
     print(r)
     holders = TokenHolders.model_validate(r.json())
-    return holders.model_dump_json()
+    return holders
 
 
 async def get_spot_in_usdc():
