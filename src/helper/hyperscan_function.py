@@ -1,4 +1,4 @@
-yimport requests
+import requests
 from src.validator.hyperscan import Spots, TokenHolders
 from src.config import hypurrsca_url
 
