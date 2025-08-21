@@ -1,11 +1,11 @@
-import requests
+yimport requests
 from src.validator.hyperscan import Spots, TokenHolders
 from src.config import hypurrsca_url
 
 
 async def get_token_holders(token: str):
     limit = 2000
-    r = requests.get(f"{hypurrsca_url}/holders/{token}/{limit}")
+    r = requests.get(f"{hypurrsca_url}/holdersWithLimit/{token}/{limit}")
     holders = TokenHolders.model_validate(r.json())
     return holders
 
