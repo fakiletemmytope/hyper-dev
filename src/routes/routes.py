@@ -16,7 +16,7 @@ from src.helper.functions import (
     process_defi,
     get_defi_from_db,
 )
-from src.helper.user_functions import all_user_date
+from src.helper.user_functions import all_user_date, get_mids
 from src.helper.hyperscan_function import get_spot_in_usdc, get_token_holders
 
 router = APIRouter(prefix="/api")
@@ -71,7 +71,7 @@ def validate_datetime_format(value: Optional[str], required: bool = False):
 
 
 @router.get("/user-info/{id}")
-def user_info(
+async def user_info(
     id: str = Path(..., description="User ID"),
     start_time: str = Query(
         ...,
@@ -89,9 +89,8 @@ def user_info(
     # Validate with custom function
     start_time = validate_datetime_format(start_time, required=True)
     end_time = validate_datetime_format(end_time)
-
     # Call your function
-    value = all_user_date(id=id, start_time=start_time, end_time=end_time)
+    value = await all_user_date(id=id, start_time=start_time, end_time=end_time)
     return value
 
 

@@ -138,7 +138,11 @@ def user_fills_by_time(id: str, start_time: int, end_time: int = None):
     #     json.dump(user_fills_by_time, f, indent=4)
 
 
-def all_user_date(id: str, start_time: str, end_time: str = None):
+async def get_mids():
+    return info.all_mids()
+
+
+async def all_user_date(id: str, start_time: str, end_time: str = None):
     try:
         start_time = to_epoch_millis(start_time)
         # print(start_time)
@@ -150,13 +154,22 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
         staking_summary = user_staking_summary(id)
         delegation = user_staking_delegations(id)
         user_history = user_fills_by_time(id, start_time, end_time)
-        return {
+        user = {
             "user_state": user_state,
             "user_spot_state": user_spot_state,
             "staking_summary": staking_summary,
             "staking_delegation": delegation,
             "trading_history": user_history,
         }
+        mids = await get_mids()
+        for h in user["user_spot_state"]["Holdings"]:
+            price = mids.get(h["coin"])
+            if price is not None:
+                price = float(price)
+                h["value_in_usd"] = h["total"] * price
+                if h["entry"] > 0:  # only if entry price exists
+                    h["unrealized_pnl"] = (price - h["entry"]) * h["total"]
+        return user
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=400)
 
@@ -193,7 +206,7 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
 # user_spot = info.spot_meta()
 # user_open_orders = info.open_orders(id)
 # user_fills = info.user_fills(id)
-# # user_all_mids = info.all_mids(id)
+
 # user_fills = info.user_fills(id)
 # user_summary = info.user_staking_summary(id)
 # user_funding_histroy = info.user_funding_history(id, startTime=start_time)
