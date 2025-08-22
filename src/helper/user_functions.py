@@ -163,13 +163,12 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
 
         for h in user_data["user_spot_state"]["Holdings"]:
               price = mids.get(h["coin"])
-              if price is not None:
-                  price = float(price)
-                  h["value_in_usd"] = h["total"] * price
-              if h["entry"] > 0:  # only if entry price exists
-                  h["unrealized_pnl"] = (price - h["entry"]) * h["total"]
+              if price:
+                 price = float(price)
+                 h["value_in_usd"] = h["total"] * price    
         return user_data
     except Exception as e:
+        print(str(e))
         raise HTTPException(detail=str(e), status_code=400)
 
 
