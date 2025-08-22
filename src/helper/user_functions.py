@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+k#!/usr/bin/env python
 
 from fastapi import HTTPException
 from hyperliquid.info import Info
@@ -165,6 +165,7 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
             price = mids.get(h["coin"])
             if price is not None:
                  h["value_in_usd"] = h["total"] * float(price)
+        return user_data
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=400)
 
