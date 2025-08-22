@@ -16,7 +16,7 @@ from src.helper.functions import (
     process_defi,
     get_defi_from_db,
 )
-from src.helper.user_functions import all_user_date, get_mids
+from src.helper.user_functions import all_user_data
 from src.helper.hyperscan_function import get_spot_in_usdc, get_token_holders
 
 router = APIRouter(prefix="/api")
@@ -90,7 +90,7 @@ async def user_info(
     start_time = validate_datetime_format(start_time, required=True)
     end_time = validate_datetime_format(end_time)
     # Call your function
-    value = await all_user_date(id=id, start_time=start_time, end_time=end_time)
+    value = all_user_data(id=id, start_time=start_time, end_time=end_time)
     return value
 
 

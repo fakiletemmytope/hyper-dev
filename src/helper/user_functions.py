@@ -142,7 +142,7 @@ def get_mids():
     return info.all_mids()
 
 
-def all_user_date(id: str, start_time: str, end_time: str = None):
+def all_user_data(id: str, start_time: str, end_time: str = None):
     try:
         start_time = to_epoch_millis(start_time)
         # print(start_time)
