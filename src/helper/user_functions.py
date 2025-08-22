@@ -161,7 +161,7 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
             "trading_history": user_history,
         }
 
-        for h in user["user_spot_state"]["Holdings"]:
+        for h in user_data["user_spot_state"]["Holdings"]:
               price = mids.get(h["coin"])
               if price is not None:
                   price = float(price)
