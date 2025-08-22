@@ -4,9 +4,8 @@ from src.config import hypurrsca_url
 
 
 async def get_token_holders(token: str):
-    r = requests.get(f"{hypurrsca_url}/holders/{token}")
-    # r = requests.get(f"{hypurrsca_url}/holdersWithLimit/{token}/{limit}")
-    print(r)
+    limit = 2000
+    r = requests.get(f"{hypurrsca_url}/holdersWithLimit/{token}/{limit}")
     holders = TokenHolders.model_validate(r.json())
     return holders
 
