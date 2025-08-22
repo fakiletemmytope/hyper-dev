@@ -172,6 +172,7 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
         return user_data
     except Exception as e:
         print(str(e))
+        print(str(e))
         raise HTTPException(detail=str(e), status_code=400)
 
 
