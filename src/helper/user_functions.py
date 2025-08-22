@@ -137,7 +137,8 @@ def user_fills_by_time(id: str, start_time: int, end_time: int = None):
     # with open("user_fill.json", "w") as f:
     #     json.dump(user_fills_by_time, f, indent=4)
 
-
+def get_mids():
+    return info.all_mids()
 def all_user_date(id: str, start_time: str, end_time: str = None):
     try:
         start_time = to_epoch_millis(start_time)
@@ -150,13 +151,20 @@ def all_user_date(id: str, start_time: str, end_time: str = None):
         staking_summary = user_staking_summary(id)
         delegation = user_staking_delegations(id)
         user_history = user_fills_by_time(id, start_time, end_time)
-        return {
+        mids = get_mids()
+        
+        user_data = {
             "user_state": user_state,
             "user_spot_state": user_spot_state,
             "staking_summary": staking_summary,
             "staking_delegation": delegation,
             "trading_history": user_history,
         }
+
+        for h in user_data["user_spot_state"]["Holdings"]:
+            price = mids.get(h["coin"])
+            if price is not None:
+                 h["value_in_usd"] = h["total"] * float(price)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=400)
 
